@@ -1,0 +1,17 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: NEST status plotter
+message: 'If you use this software, please cite it as below.'
+type: software
+authors:
+  - given-names: Riccardo
+    family-names: Cavadini
+    email: wakephul@gmail.com
+    orcid: 'https://orcid.org/0000-0002-7581-5955'
+    affiliation: Politecnico di Milano
+repository-code: 'https://github.com/wakephul/nest-status-plotter'
+url: 'https://wakephul.github.io/nest-status-plotter/'
+version: 0.1.1-alpha
+date-released: '2022-04-30'
