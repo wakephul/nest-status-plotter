@@ -1,19 +1,23 @@
 //selecting all required elements
 const dropArea = document.querySelector(".form"),
 dragText = dropArea.querySelector("header"),
-button = dropArea.querySelector("button"),
+button = dropArea.querySelector(".form__button"),
 input = dropArea.querySelector("input");
 let file; //this is a global variable and we'll use it inside multiple functions
 
-button.onclick = ()=>{
-    input.click(); //if user click on the button then the input also clicked
+let plotID = 0;
+
+button.onclick = () => {
+    console.log('click')
+    document.getElementById('upload').click(); //if user click on the button then the input also clicked
 }
 
 input.addEventListener("change", function(){
+    console.log('clickkk')
     //getting user select file and [0] this means if user select multiple files then we'll select only the first one
     file = this.files[0];
     dropArea.classList.add("active");
-    showFile(); //calling function
+    manageFile(); //calling function
 });
 
 
@@ -35,60 +39,52 @@ dropArea.addEventListener("drop", (event)=>{
     event.preventDefault(); //preventing from default behaviour
     //getting user select file and [0] this means if user select multiple files then we'll select only the first one
     file = event.dataTransfer.files[0];
-    // showFile(); //calling function
-    // handleFileSelect();
     manageFile();
 });
 
 function manageFile(){
-    let fileType = file.type; //getting selected file type
+    let fileType = file.type;
     let validExtensions = ["text/csv"];
-    console.warn(fileType)
-    if(validExtensions.includes(fileType)){ //if user selected file is a csv
-    let fileReader = new FileReader(); //creating new FileReader object
-    fileReader.onload = ()=>{
-        // let fileURL = fileReader.result; //passing user file source in fileURL variable
-        // UNCOMMENT THIS BELOW LINE. I GOT AN ERROR WHILE UPLOADING THIS POST SO I COMMENTED IT
-        // let imgTag = `<img src="${fileURL}" alt="image">`; //creating an img tag and passing user selected file source inside src attribute
-        // dropArea.innerHTML = imgTag; //adding that created img tag inside dropArea container
-        const csvData = fileReader.result;
-        const csvContent = "data:text/csv;charset=utf-8,"+csvData;
-        drawPlow(csvContent)
+    if(validExtensions.includes(fileType)){
+        let fileReader = new FileReader();
+        fileReader.onload = ()=>{
+            const csvData = fileReader.result;
+            drawPlow(csvData);
+        }
+        fileReader.readAsDataURL(file);
+    } else {
+        alert("This is not a CSV File!");
     }
-    fileReader.readAsDataURL(file);
-    }else{
-    alert("This is not a CSV File!");
     dropArea.classList.remove("active");
     dragText.textContent = "Drag & Drop to Upload File";
-    }
 }
-function handleFileSelect(evt) {
-    // evt.preventDefault();
-    let files = evt.target.files; // FileList object
+// function handleFileSelect(evt) {
+//     // evt.preventDefault();
+//     let files = evt.target.files; // FileList object
 
-    // use the 1st file from the list
-    let f = files[0];
+//     // use the 1st file from the list
+//     let f = files[0];
     
-    let reader = new FileReader();
+//     let reader = new FileReader();
 
-    // Closure to capture the file information.
-    reader.onload = (function(theFile) {
-        return function(e) {
-            const csvData = e.target.result;
-            const csvContent = "data:text/csv;charset=utf-8,"+csvData;
-            drawPlow(csvContent)
-        };
-    })(f);
+//     // Closure to capture the file information.
+//     reader.onload = (function(theFile) {
+//         return function(e) {
+//             const csvData = e.target.result;
+//             const csvContent = "data:text/csv;charset=utf-8,"+csvData;
+//             drawPlow(csvContent)
+//         };
+//     })(f);
     
-    reader.readAsBinaryString(f);
-}
-document.getElementById('upload').addEventListener('change', handleFileSelect, false);
+//     reader.readAsBinaryString(f);
+// }
+// document.getElementById('upload').addEventListener('change', handleFileSelect, false);
 
-plotID = 0;
 function drawPlow(file) {
     plotID++;
     document.getElementById('plotDiv'+(plotID-1)).remove();
     const newDiv = document.createElement("div");
+    newDiv.classList = 'plot';
     newDiv.id = 'plotDiv'+plotID;
     document.body.appendChild(newDiv);
     Plotly.d3.csv(file, function (err, data) {
@@ -113,8 +109,6 @@ function drawPlow(file) {
         let yTitle = 'Voltage';
         let yRange = [-80, -30];
         if ('voltage' in data[0]) {
-            console.log('voltage plot')
-            console.log(data)
             for (var i = 0; i < data.length; i++) {
                 var datum = data[i];
                 var trace = getData(datum.time, datum.sender);
@@ -128,8 +122,6 @@ function drawPlow(file) {
                 }
             }
         } else {
-            console.log('spikes plot')
-            console.log(data)
             yRange = [0, 500];
             yTitle = 'Neuron ID'
             for (var i = 0; i < data.length; i++) {

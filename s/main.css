@@ -7,6 +7,7 @@
 }
 body {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
@@ -14,6 +15,7 @@ body {
 .form {
     border: 2px dashed #5256ad;
     padding: 40px 20px;
+    margin: 40px auto;
     width: 50%;
     border-radius: 5px;
     display: flex;
@@ -29,19 +31,19 @@ body {
   color: #5256ad;
 }
 .form header{
-  font-size: 30px;
+  font-size: 24px;
   font-weight: 500;
   color: #5256ad;
 }
 .form span{
-  font-size: 25px;
+  font-size: 20px;
   font-weight: 500;
   color: #5256ad;
   margin: 10px 0 15px 0;
 }
-.form button {
+.form__button {
   padding: 10px 25px;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 500;
   border: none;
   outline: none;
