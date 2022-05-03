@@ -1,15 +1,22 @@
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Plotly.js -->
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="stylesheet" href="s/main.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
   </head>
   
   <body>
-    <form enctype="multipart/form-data">
-        <input id="upload" type="file" accept=".csv" name="files[]">
+    <form enctype="multipart/form-data" class="form">
+        <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
+        <header>Drag & Drop to Upload File</header>
+        <span>OR</span>
+        <button>Browse File</button>
+        <input id="upload" type="file" accept=".csv" name="files[]" hidden>
     </form>
 
     <div id="plotDiv0"></div>
 
-    <script src="js/main.js">
-    </script>
+    <script src="js/main.js"></script>
   </body>
